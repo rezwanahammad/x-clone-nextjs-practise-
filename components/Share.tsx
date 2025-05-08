@@ -1,9 +1,19 @@
+"use client";
+
+import { Shareaction } from "@/actions";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 const Share = () => {
+  const [media, setMedia] = useState<File | null>(null);
+  const handleMediaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setMedia(e.target.files[0]);
+    }
+  };
+
   return (
-    <div className="p-4 flex gap-3">
+    <form className="p-4 flex gap-3" action={Shareaction}>
       <div className="w-10 h-10 rounded-full overflow-hidden ">
         <Image
           src="/general/avatar.png"
@@ -13,17 +23,32 @@ const Share = () => {
         />
       </div>
       <div className="flex-1 flex flex-col gap-4 mt-2">
-        <input type="text" placeholder="What's happening?" className="bg-transparent outline-none text-l" />
+        <input
+          type="text"
+          name="desc"
+          placeholder="What's happening?"
+          className="bg-transparent outline-none text-l"
+        />
       </div>
-      <div className="flex items-center justify-between gap-4 flex-wrap">
+      <div className="flex items-center justify-between gap-4 flex-wrap ">
         <div className="flex gap-4 flex-wrap">
-          <Image
-            src="/icons/image.svg"
-            alt="image"
-            width={20}
-            height={20}
-            className="cursor-pointer"
+          <input
+            id="media-upload"
+            type="file"
+            name="file"
+            onChange={handleMediaChange}
+            className="hidden"
+            title="Upload Media"
           />
+          <label htmlFor="media-upload">
+            <Image
+              src="/icons/image.svg"
+              alt="image"
+              width={20}
+              height={20}
+              className="cursor-pointer"
+            />
+          </label>
           <Image
             src="/icons/gif.svg"
             alt="image"
@@ -67,7 +92,7 @@ const Share = () => {
           Post
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 
